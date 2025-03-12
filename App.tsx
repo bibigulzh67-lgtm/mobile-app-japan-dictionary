@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Navigation } from '@/navigation/Navigation'
+import { StatusBar } from 'expo-status-bar'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { TamaguiProvider } from 'tamagui'
+import tamaguiConfig from 'tamagui.config'
+import { SQLiteProvider } from 'expo-sqlite'
+import { Suspense } from 'react'
+import { ActivityIndicator } from 'react-native'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	return (
+		<>
+			<SafeAreaProvider>
+				<TamaguiProvider config={tamaguiConfig}>
+					<Suspense fallback={<ActivityIndicator size='large' />}>
+						<SQLiteProvider
+							databaseName='vocabulary.db'
+							assetSource={{
+								assetId: require('./app/assets/database/vocabulary.db')
+							}}
+						>
+							<Navigation />
+						</SQLiteProvider>
+					</Suspense>
+				</TamaguiProvider>
+			</SafeAreaProvider>
+			<StatusBar style='light' />
+		</>
+	)
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

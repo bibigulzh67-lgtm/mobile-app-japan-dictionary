@@ -10,7 +10,13 @@ export const Navigation = () => {
 		<NavigationContainer>
 			<Stack.Navigator>
 				{routes.map(route => (
-					<Stack.Screen key={route.name} {...route} />
+					<Stack.Screen
+						key={route.name}
+						options={{
+							title: route.title
+						}}
+						{...route}
+					/>
 				))}
 			</Stack.Navigator>
 		</NavigationContainer>

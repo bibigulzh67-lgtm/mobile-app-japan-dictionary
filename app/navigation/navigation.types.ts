@@ -6,9 +6,16 @@ export type TypeRootStackParamList = {
 	BookPage: {
 		slug: string
 	}
+	LessonPage: {
+		slug: string
+	}
+	WordPage: {
+		slug: string
+	}
 }
 
 export interface IRoute {
 	name: keyof TypeRootStackParamList
 	component: ComponentType
+	title?: string
 }

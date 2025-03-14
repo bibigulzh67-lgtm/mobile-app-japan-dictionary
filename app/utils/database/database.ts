@@ -8,3 +8,12 @@ export interface Lesson {
 	lesson_number: number
 	book_id: number
 }
+
+export interface Word {
+	id: number
+	japanese: string
+	accent: string
+	romaji: string
+	russian: string
+	lesson_id: string
+}

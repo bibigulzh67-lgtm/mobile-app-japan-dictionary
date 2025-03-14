@@ -1,73 +1,73 @@
-import { BookCard } from '@/components/ui/book-card/BookCard'
 import { useTypedNavigation } from '@/hooks/useTypedNavigation'
 import { Book } from '@/utils/database/database'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useCallback, useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
-import { Button, ScrollView, XStack, YStack, ZStack } from 'tamagui'
+import { Button, Card, YStack, Image, H3 } from 'tamagui'
 
 export const Home = () => {
 	const db = useSQLiteContext()
-	const [books, setBooks] = useState<Book[]>([])
+	const [book, setBook] = useState<Book | null>()
 	const { navigate } = useTypedNavigation()
 
 	const bookCovers: { [key: number]: string } = {
-		1: require('@/assets/book-covers/1.jpg'),
-		2: require('@/assets/book-covers/2.jpg'),
-		3: require('@/assets/book-covers/3.jpg'),
-		4: require('@/assets/book-covers/4.jpg'),
-		5: require('@/assets/book-covers/5.jpg'),
-		6: require('@/assets/book-covers/6.jpg'),
-		7: require('@/assets/book-covers/7.jpg')
+		1: require('@/assets/book-covers/1.jpg')
 	}
 
-	const refetchBooks = useCallback(() => {
+	const bookCover = bookCovers[1]
+
+	const refetchBook = useCallback(() => {
 		async function refetch() {
 			await db.withExclusiveTransactionAsync(async () => {
-				setBooks(await db.getAllAsync<Book>("SELECT * FROM 'books'"))
+				setBook(
+					await db.getFirstAsync<Book>(
+						"SELECT * FROM 'books' WHERE id = ?",
+						1
+					)
+				)
 			})
 		}
 		refetch()
 	}, [db])
 
 	useEffect(() => {
-		refetchBooks()
+		refetchBook()
 	}, [])
 
 	return (
-		<YStack px={20} py={20} gap='$5' fullscreen>
-			<ScrollView showsVerticalScrollIndicator={false}>
-				<XStack
-					flex={1}
-					gap='$3'
-					flexWrap='wrap'
-					justify='space-between'
-				>
-					{books.map(book => (
-						<Pressable
-							onPress={() =>
-								navigate('BookPage', {
-									slug: book.id.toString()
-								})
-							}
-							key={book.id}
-						>
-							<BookCard
-								bookId={book.id.toString()}
-								name={book.name}
-								imageUrl={bookCovers[book.id]}
+		<YStack
+			flex={1}
+			justify={'space-between'}
+			px={20}
+			py={20}
+			gap='$5'
+			fullscreen
+		>
+			<YStack width={'100%'}>
+				<Pressable onPress={() => navigate('BookPage', { slug: '1' })}>
+					<Card mx={'auto'} width={300} height={450} bordered>
+						<Card.Background>
+							<Image
+								source={{
+									uri: bookCover,
+									width: 300,
+									height: 450
+								}}
 							/>
-						</Pressable>
-					))}
-				</XStack>
-			</ScrollView>
+						</Card.Background>
+					</Card>
+				</Pressable>
+				<H3 text={'center'} my={10} width={'100%'} fontSize={'$5'}>
+					{book?.name}
+				</H3>
+			</YStack>
 			<Button
 				theme={'accent'}
 				size='$5'
 				my={10}
 				onPress={() => navigate('Lessons')}
 			>
-				All lessons
+				Все занятия
 			</Button>
 		</YStack>
 	)

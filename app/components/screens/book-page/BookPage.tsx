@@ -1,19 +1,21 @@
+import { useTypedNavigation } from '@/hooks/useTypedNavigation'
 import { useTypedRoutes } from '@/hooks/useTypedRoutes'
 import { Lesson } from '@/utils/database/database'
 import { useSQLiteContext } from 'expo-sqlite/build/hooks'
 import { useCallback, useEffect, useState } from 'react'
-import { YStack, Text } from 'tamagui'
+import { YStack, Text, Button, ScrollView, XStack } from 'tamagui'
 
 export const BookPage = () => {
 	const db = useSQLiteContext()
-	const [book, setBook] = useState<Lesson[]>()
+	const [lessons, setLessons] = useState<Lesson[]>()
+	const { navigate } = useTypedNavigation()
 
 	const { params } = useTypedRoutes()
 
 	const refetchBook = useCallback(() => {
 		async function refetch() {
 			await db.withExclusiveTransactionAsync(async () => {
-				setBook(
+				setLessons(
 					await db.getAllAsync<Lesson>(
 						"SELECT * FROM 'lessons' WHERE book_id = ?",
 						params!.slug
@@ -28,13 +30,30 @@ export const BookPage = () => {
 		refetchBook()
 	}, [])
 	return (
-		<YStack fullscreen>
-			<Text>BookPage</Text>
-			{book?.map(lesson => (
-				<Text key={lesson.id} my={5}>
-					{lesson.lesson_number}
-				</Text>
-			))}
+		<YStack fullscreen px={20} py={20}>
+			<ScrollView>
+				<XStack
+					flex={1}
+					gap='$3'
+					flexWrap='wrap'
+					justify='space-between'
+				>
+					{lessons?.map(lesson => (
+						<Button
+							flexBasis={170}
+							key={lesson.id}
+							my={5}
+							onPress={() =>
+								navigate('LessonPage', {
+									slug: lesson.id.toString()
+								})
+							}
+						>
+							<Text>Урок {lesson.lesson_number}</Text>
+						</Button>
+					))}
+				</XStack>
+			</ScrollView>
 		</YStack>
 	)
 }

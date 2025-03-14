@@ -1,4 +1,4 @@
-import { CardProps, Card, XStack, Button, Image, H4 } from 'tamagui'
+import { CardProps, Card, Image } from 'tamagui'
 
 type BookCardProps = {
 	bookId: string
@@ -9,15 +9,6 @@ type BookCardProps = {
 export function BookCard(props: BookCardProps) {
 	return (
 		<Card size='$2' width={170} height={250} bordered {...props}>
-			<Card.Header padded>
-				<H4 py={10} lineHeight={'$1'} fontSize={'$1'}>
-					{props.name}
-				</H4>
-			</Card.Header>
-			<Card.Footer padded>
-				<XStack flex={1} />
-				<Button theme={'accent'}>Open</Button>
-			</Card.Footer>
 			<Card.Background>
 				<Image
 					source={{

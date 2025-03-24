@@ -36,11 +36,11 @@ export const LessonPage = () => {
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<YStack gap='$3' flexWrap='wrap'>
 					{words?.map(word => {
-						const regex = /\p{P}/gu
-						const replacedWord = word.russian
-							.replace(regex, '')
-							.trimStart()
-						const cutWord = replacedWord.split(' ')[0]
+						// const regex = /\p{P}/gu
+						// const replacedWord = word.russian
+						// 	.replace(regex, '')
+						// 	.trimStart()
+						// const cutWord = replacedWord.split(' ')[0]
 						return (
 							<Pressable
 								key={word.id}
@@ -57,7 +57,16 @@ export const LessonPage = () => {
 										justify={'space-between'}
 									>
 										<Text>{word.japanese}</Text>
-										<Text>{cutWord}</Text>
+										<Text
+											numberOfLines={1}
+											ellipsizeMode='tail'
+											style={{
+												width: 150,
+												textAlign: 'right'
+											}}
+										>
+											{word.russian}
+										</Text>
 									</XStack>
 									<Separator my={20} />
 								</YStack>

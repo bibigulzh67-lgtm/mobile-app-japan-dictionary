@@ -31,16 +31,12 @@ export const BookPage = () => {
 	}, [])
 	return (
 		<YStack fullscreen px={20} py={20}>
-			<ScrollView>
-				<XStack
-					flex={1}
-					gap='$3'
-					flexWrap='wrap'
-					justify='space-between'
-				>
+			<ScrollView showsVerticalScrollIndicator={false}>
+				<XStack flex={1} gap='$3' flexWrap='wrap' self={'center'}>
 					{lessons?.map(lesson => (
 						<Button
-							flexBasis={170}
+							flex={1}
+							flexBasis={140}
 							key={lesson.id}
 							my={5}
 							onPress={() =>

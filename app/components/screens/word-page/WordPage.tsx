@@ -3,7 +3,6 @@ import { Word } from '@/utils/database/database'
 import { useSQLiteContext } from 'expo-sqlite/build/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import {
-	H2,
 	H5,
 	Separator,
 	SizableText,
@@ -30,11 +29,7 @@ const VerticalTabs = (props: VerticalTabsProps) => {
 			overflow='hidden'
 			borderColor='$borderColor'
 		>
-			<Tabs.List
-				disablePassBorderRadius='end'
-				aria-label='Manage your account'
-				separator={<Separator />}
-			>
+			<Tabs.List disablePassBorderRadius='end' separator={<Separator />}>
 				<Tabs.Tab value='tab1'>
 					<SizableText>Акцент</SizableText>
 				</Tabs.Tab>
@@ -105,8 +100,8 @@ export const WordPage = () => {
 	}, [])
 
 	return (
-		<YStack justify='center' px={20} py={20}>
-			<H2 py={20}>{word?.japanese || 'error'}</H2>
+		<YStack justify='center' px={10} py={10}>
+			<H5 py={20}>{word?.japanese || 'error'}</H5>
 			<VerticalTabs
 				accent={word?.accent}
 				romaji={word?.romaji}

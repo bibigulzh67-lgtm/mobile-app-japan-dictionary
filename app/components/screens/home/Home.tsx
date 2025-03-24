@@ -35,29 +35,17 @@ export const Home = () => {
 	}, [])
 
 	return (
-		<YStack
-			flex={1}
-			justify={'space-between'}
-			px={20}
-			py={20}
-			gap='$5'
-			fullscreen
-		>
-			<YStack width={'100%'}>
+		<YStack justify={'space-between'} px={20} py={20} fullscreen>
+			<YStack justify={'center'} width={'100%'}>
 				<Pressable onPress={() => navigate('BookPage', { slug: '1' })}>
-					<Card mx={'auto'} width={300} height={450} bordered>
-						<Card.Background>
-							<Image
-								source={{
-									uri: bookCover,
-									width: 300,
-									height: 450
-								}}
-							/>
-						</Card.Background>
-					</Card>
+					<Image
+						style={{ width: 170, height: 240, alignSelf: 'center' }}
+						source={{
+							uri: bookCover
+						}}
+					/>
 				</Pressable>
-				<H3 text={'center'} my={10} width={'100%'} fontSize={'$5'}>
+				<H3 text={'center'} width={'100%'} fontSize={'$3'}>
 					{book?.name}
 				</H3>
 			</YStack>

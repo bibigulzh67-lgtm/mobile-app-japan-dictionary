@@ -42,6 +42,8 @@ export const Lessons = () => {
 					gap='$3'
 					flexWrap='wrap'
 					justify='space-between'
+					maxW={'90%'}
+					self={'center'}
 				>
 					{books.map(book => (
 						<Pressable

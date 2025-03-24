@@ -8,13 +8,13 @@ type BookCardProps = {
 
 export function BookCard(props: BookCardProps) {
 	return (
-		<Card size='$2' width={170} height={250} bordered {...props}>
+		<Card width={120} height={180} bordered {...props}>
 			<Card.Background>
 				<Image
 					source={{
 						uri: props.imageUrl,
-						width: 180,
-						height: 250
+						width: 120,
+						height: 180
 					}}
 				/>
 			</Card.Background>

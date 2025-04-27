@@ -15,5 +15,6 @@ export interface Word {
 	accent: string
 	romaji: string
 	russian: string
+	kanji: string
 	lesson_id: string
 }

@@ -14,10 +14,26 @@ import {
 type VerticalTabsProps = {
 	accent: string | undefined
 	romaji: string | undefined
+	kanji: string | undefined
 	russian: string | undefined
 }
 
 const VerticalTabs = (props: VerticalTabsProps) => {
+	const isKanji = props.romaji === null
+
+	let secondTabContent = (
+		<Tabs.Tab value='tab2'>
+			<SizableText>Латиница</SizableText>
+		</Tabs.Tab>
+	)
+
+	if (props.kanji) {
+		secondTabContent = (
+			<Tabs.Tab value='tab2'>
+				<SizableText>Кандзи</SizableText>
+			</Tabs.Tab>
+		)
+	}
 	return (
 		<Tabs
 			defaultValue='tab1'
@@ -33,9 +49,7 @@ const VerticalTabs = (props: VerticalTabsProps) => {
 				<Tabs.Tab value='tab1'>
 					<SizableText>Акцент</SizableText>
 				</Tabs.Tab>
-				<Tabs.Tab value='tab2'>
-					<SizableText>Латиница</SizableText>
-				</Tabs.Tab>
+				{secondTabContent}
 				<Tabs.Tab value='tab3'>
 					<SizableText>Перевод</SizableText>
 				</Tabs.Tab>
@@ -45,7 +59,9 @@ const VerticalTabs = (props: VerticalTabsProps) => {
 				<H5 textAlign='center'>{props.accent}</H5>
 			</TabsContent>
 			<TabsContent value='tab2'>
-				<H5 textAlign='center'>{props.romaji}</H5>
+				<H5 textAlign='center'>
+					{isKanji ? props.kanji : props.romaji}
+				</H5>
 			</TabsContent>
 			<TabsContent value='tab3'>
 				<H5 textAlign='center'>{props.russian}</H5>
@@ -106,6 +122,7 @@ export const WordPage = () => {
 				accent={word?.accent}
 				romaji={word?.romaji}
 				russian={word?.russian}
+				kanji={word?.kanji}
 			/>
 		</YStack>
 	)

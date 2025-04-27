@@ -1,20 +1,34 @@
 import { useTypedNavigation } from '@/hooks/useTypedNavigation'
 import { Book } from '@/utils/database/database'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useCallback, useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
-import { Button, Card, YStack, Image, H3 } from 'tamagui'
+import { Button, YStack, Image, H3 } from 'tamagui'
 
 export const Home = () => {
 	const db = useSQLiteContext()
 	const [book, setBook] = useState<Book | null>()
 	const { navigate } = useTypedNavigation()
+	const [bookId, setBookId] = useState<string>('1')
 
-	const bookCovers: { [key: number]: string } = {
-		1: require('@/assets/book-covers/1.jpg')
+	const getData = async () => {
+		const value = await AsyncStorage.getItem('book-id')
+		if (value !== null) {
+			setBookId(value)
+		}
 	}
 
-	const bookCover = bookCovers[1]
+	const bookCovers: { [key: number]: string } = {
+		1: require('@/assets/book-covers/1.jpg'),
+		2: require('@/assets/book-covers/2.jpg'),
+		3: require('@/assets/book-covers/3.jpg'),
+		4: require('@/assets/book-covers/4.jpg'),
+		5: require('@/assets/book-covers/5.jpg'),
+		6: require('@/assets/book-covers/6.jpg'),
+		7: require('@/assets/book-covers/7.jpg')
+	}
 
 	const refetchBook = useCallback(() => {
 		async function refetch() {
@@ -22,7 +36,7 @@ export const Home = () => {
 				setBook(
 					await db.getFirstAsync<Book>(
 						"SELECT * FROM 'books' WHERE id = ?",
-						1
+						bookId
 					)
 				)
 			})
@@ -30,24 +44,29 @@ export const Home = () => {
 		refetch()
 	}, [db])
 
-	useEffect(() => {
-		refetchBook()
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			getData()
+			refetchBook()
+		}, [])
+	)
 
 	return (
 		<YStack justify={'space-between'} px={20} py={20} fullscreen>
 			<YStack justify={'center'} width={'100%'}>
-				<Pressable onPress={() => navigate('BookPage', { slug: '1' })}>
+				<Pressable
+					onPress={() => navigate('BookPage', { slug: bookId })}
+				>
 					<Image
 						style={{ width: 170, height: 240, alignSelf: 'center' }}
 						source={{
-							uri: bookCover
+							uri: bookCovers[+bookId]
 						}}
 					/>
 				</Pressable>
-				<H3 text={'center'} width={'100%'} fontSize={'$3'}>
+				{/* <H3 text={'center'} width={'100%'} fontSize={'$3'}>
 					{book?.name}
-				</H3>
+				</H3> */}
 			</YStack>
 			<Button
 				theme={'accent'}

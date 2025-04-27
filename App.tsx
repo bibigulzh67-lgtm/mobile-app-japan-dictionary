@@ -14,7 +14,7 @@ export default function App() {
 				<TamaguiProvider config={tamaguiConfig}>
 					<Suspense fallback={<ActivityIndicator size='large' />}>
 						<SQLiteProvider
-							databaseName='vocabulary.db'
+							databaseName='vocabulary1.db'
 							assetSource={{
 								assetId: require('./app/assets/database/vocabulary.db')
 							}}

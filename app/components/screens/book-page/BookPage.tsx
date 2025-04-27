@@ -1,6 +1,7 @@
 import { useTypedNavigation } from '@/hooks/useTypedNavigation'
 import { useTypedRoutes } from '@/hooks/useTypedRoutes'
 import { Lesson } from '@/utils/database/database'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSQLiteContext } from 'expo-sqlite/build/hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { YStack, Text, Button, ScrollView, XStack } from 'tamagui'
@@ -26,8 +27,13 @@ export const BookPage = () => {
 		refetch()
 	}, [db])
 
+	const storeData = async (book_id: string) => {
+		await AsyncStorage.setItem('book-id', book_id)
+	}
+
 	useEffect(() => {
 		refetchBook()
+		storeData(params?.slug || '1')
 	}, [])
 	return (
 		<YStack fullscreen px={20} py={20}>

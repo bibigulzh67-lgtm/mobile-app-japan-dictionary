@@ -2,14 +2,7 @@ import { useTypedRoutes } from '@/hooks/useTypedRoutes'
 import { Word } from '@/utils/database/database'
 import { useSQLiteContext } from 'expo-sqlite/build/hooks'
 import { useCallback, useEffect, useState } from 'react'
-import {
-	H5,
-	Separator,
-	SizableText,
-	Tabs,
-	TabsContentProps,
-	YStack
-} from 'tamagui'
+import { H5, Separator, SizableText, Tabs, TabsContentProps, YStack } from 'tamagui'
 
 type VerticalTabsProps = {
 	accent: string | undefined
@@ -59,9 +52,7 @@ const VerticalTabs = (props: VerticalTabsProps) => {
 				<H5 textAlign='center'>{props.accent}</H5>
 			</TabsContent>
 			<TabsContent value='tab2'>
-				<H5 textAlign='center'>
-					{isKanji ? props.kanji : props.romaji}
-				</H5>
+				<H5 textAlign='center'>{isKanji ? props.kanji : props.romaji}</H5>
 			</TabsContent>
 			<TabsContent value='tab3'>
 				<H5 textAlign='center'>{props.russian}</H5>
@@ -101,10 +92,7 @@ export const WordPage = () => {
 		async function refetch() {
 			await db.withExclusiveTransactionAsync(async () => {
 				setWord(
-					await db.getFirstAsync<Word>(
-						"SELECT * FROM 'words' WHERE id = ?",
-						params!.slug
-					)
+					await db.getFirstAsync<Word>("SELECT * FROM 'words' WHERE id = ?", params!.slug)
 				)
 			})
 		}

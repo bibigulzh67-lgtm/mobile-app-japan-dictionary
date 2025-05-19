@@ -5,7 +5,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useCallback, useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
-import { Button, YStack, Image, H3 } from 'tamagui'
+import { Button, YStack, Image } from 'tamagui'
 
 export const Home = () => {
 	const db = useSQLiteContext()
@@ -33,12 +33,7 @@ export const Home = () => {
 	const refetchBook = useCallback(() => {
 		async function refetch() {
 			await db.withExclusiveTransactionAsync(async () => {
-				setBook(
-					await db.getFirstAsync<Book>(
-						"SELECT * FROM 'books' WHERE id = ?",
-						bookId
-					)
-				)
+				setBook(await db.getFirstAsync<Book>("SELECT * FROM 'books' WHERE id = ?", bookId))
 			})
 		}
 		refetch()
@@ -54,9 +49,7 @@ export const Home = () => {
 	return (
 		<YStack justify={'space-between'} px={20} py={20} fullscreen>
 			<YStack justify={'center'} width={'100%'}>
-				<Pressable
-					onPress={() => navigate('BookPage', { slug: bookId })}
-				>
+				<Pressable onPress={() => navigate('BookPage', { slug: bookId })}>
 					<Image
 						style={{ width: 170, height: 240, alignSelf: 'center' }}
 						source={{
@@ -64,18 +57,15 @@ export const Home = () => {
 						}}
 					/>
 				</Pressable>
-				{/* <H3 text={'center'} width={'100%'} fontSize={'$3'}>
-					{book?.name}
-				</H3> */}
 			</YStack>
-			<Button
-				theme={'accent'}
-				size='$5'
-				my={10}
-				onPress={() => navigate('Lessons')}
-			>
-				Все занятия
-			</Button>
+			<YStack>
+				<Button theme={'accent'} size='$5' my={10} onPress={() => navigate('Lessons')}>
+					Все занятия
+				</Button>
+				<Button theme={'accent'} size='$5' my={10} onPress={() => navigate('SearchPage')}>
+					Поиск
+				</Button>
+			</YStack>
 		</YStack>
 	)
 }

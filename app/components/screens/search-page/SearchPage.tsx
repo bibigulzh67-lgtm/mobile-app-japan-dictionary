@@ -1,39 +1,54 @@
 import { Text, ScrollView, Pressable } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSQLiteContext } from 'expo-sqlite/build/hooks'
 import { useTypedNavigation } from '@/hooks/useTypedNavigation'
-import { useTypedRoutes } from '@/hooks/useTypedRoutes'
 import { Word } from '@/utils/database/database'
-import { YStack, XStack, Separator } from 'tamagui'
+import { YStack, XStack, Separator, Button, Input } from 'tamagui'
 
-export const LessonPage = () => {
+export const SearchPage = () => {
 	const db = useSQLiteContext()
 	const [words, setWords] = useState<Word[]>()
+	const [searchInput, setSearchInput] = useState<string>('')
 	const { navigate } = useTypedNavigation()
+	const scrollViewRef = useRef<ScrollView>(null)
 
-	const { params } = useTypedRoutes()
-
-	const refetchWords = useCallback(() => {
-		async function refetch() {
-			await db.withExclusiveTransactionAsync(async () => {
-				setWords(
-					await db.getAllAsync<Word>(
-						"SELECT * FROM 'words' WHERE lesson_id = ?",
-						params!.slug
-					)
+	async function refetch(query: string) {
+		const searchQuery = `%${query}%`
+		await db.withExclusiveTransactionAsync(async () => {
+			setWords(
+				await db.getAllAsync<Word>(
+					"SELECT * FROM 'words' WHERE russian LIKE ? OR japanese LIKE ? LIMIT 100",
+					searchQuery
 				)
-			})
-		}
-		refetch()
-	}, [db])
+			)
+		})
+	}
 
 	useEffect(() => {
-		refetchWords()
+		refetch('')
 	}, [])
+
+	useEffect(() => {
+		const delayDebounce = setTimeout(() => {
+			refetch(searchInput)
+			scrollViewRef.current?.scrollTo({ y: 0, animated: false })
+		}, 500)
+
+		return () => clearTimeout(delayDebounce)
+	}, [searchInput])
 
 	return (
 		<YStack fullscreen px={20} py={20}>
-			<ScrollView showsVerticalScrollIndicator={false}>
+			<XStack mb={'$5'}>
+				<Input
+					flex={1}
+					size={'$4'}
+					placeholder={'Введите слово..'}
+					value={searchInput}
+					onChangeText={value => setSearchInput(value)}
+				/>
+			</XStack>
+			<ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
 				<YStack gap='$3' flexWrap='wrap'>
 					{words?.map(word => {
 						return (

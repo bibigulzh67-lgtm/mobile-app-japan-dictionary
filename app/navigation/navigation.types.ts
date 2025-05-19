@@ -12,6 +12,7 @@ export type TypeRootStackParamList = {
 	WordPage: {
 		slug: string
 	}
+	SearchPage: undefined
 }
 
 export interface IRoute {

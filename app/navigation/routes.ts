@@ -4,6 +4,7 @@ import { IRoute } from './navigation.types'
 import { BookPage } from '@/components/screens/book-page/BookPage'
 import { LessonPage } from '@/components/screens/lesson-page/LessonPage'
 import { WordPage } from '@/components/screens/word-page/WordPage'
+import { SearchPage } from '@/components/screens/search-page/SearchPage'
 
 export const routes: IRoute[] = [
 	{
@@ -30,5 +31,10 @@ export const routes: IRoute[] = [
 		name: 'WordPage',
 		component: WordPage,
 		title: ''
+	},
+	{
+		name: 'SearchPage',
+		component: SearchPage,
+		title: 'Поиск'
 	}
 ]

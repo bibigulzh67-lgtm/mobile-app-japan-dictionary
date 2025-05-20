@@ -13,11 +13,12 @@ export const SearchPage = () => {
 	const scrollViewRef = useRef<ScrollView>(null)
 
 	async function refetch(query: string) {
-		const searchQuery = `%${query}%`
+		const searchQuery = `%${query.toLowerCase()}%`
 		await db.withExclusiveTransactionAsync(async () => {
 			setWords(
 				await db.getAllAsync<Word>(
-					"SELECT * FROM 'words' WHERE russian LIKE ? OR japanese LIKE ? LIMIT 100",
+					"SELECT * FROM 'words' WHERE LOWER(russian) LIKE ? OR japanese LIKE ? LIMIT 100",
+					searchQuery,
 					searchQuery
 				)
 			)

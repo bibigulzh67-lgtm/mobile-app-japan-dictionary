@@ -39,22 +39,22 @@ const VerticalTabs = (props: VerticalTabsProps) => {
 			borderColor='$borderColor'
 		>
 			<Tabs.List disablePassBorderRadius='end' separator={<Separator />}>
-				<Tabs.Tab value='tab1'>
+				<Tabs.Tab value='tab3'>
 					<SizableText>Акцент</SizableText>
 				</Tabs.Tab>
 				{secondTabContent}
-				<Tabs.Tab value='tab3'>
+				<Tabs.Tab value='tab1'>
 					<SizableText>Перевод</SizableText>
 				</Tabs.Tab>
 			</Tabs.List>
 			<Separator vertical />
-			<TabsContent value='tab1'>
+			<TabsContent value='tab3'>
 				<H5 textAlign='center'>{props.accent}</H5>
 			</TabsContent>
 			<TabsContent value='tab2'>
 				<H5 textAlign='center'>{isKanji ? props.kanji : props.romaji}</H5>
 			</TabsContent>
-			<TabsContent value='tab3'>
+			<TabsContent value='tab1'>
 				<H5 textAlign='center'>{props.russian}</H5>
 			</TabsContent>
 		</Tabs>

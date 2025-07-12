@@ -51,7 +51,7 @@ export const Home = () => {
 			<YStack justify={'center'} width={'100%'}>
 				<Pressable onPress={() => navigate('BookPage', { slug: bookId })}>
 					<Image
-						style={{ width: 170, height: 240, alignSelf: 'center' }}
+						style={{ width: '80%', height: '83%', alignSelf: 'center' }}
 						source={{
 							uri: bookCovers[+bookId]
 						}}

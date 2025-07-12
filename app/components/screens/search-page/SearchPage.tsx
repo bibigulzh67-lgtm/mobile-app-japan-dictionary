@@ -13,16 +13,27 @@ export const SearchPage = () => {
 	const scrollViewRef = useRef<ScrollView>(null)
 
 	async function refetch(query: string) {
-		const searchQuery = `%${query.toLowerCase()}%`
-		await db.withExclusiveTransactionAsync(async () => {
-			setWords(
-				await db.getAllAsync<Word>(
-					"SELECT * FROM 'words' WHERE LOWER(russian) LIKE ? OR japanese LIKE ? LIMIT 100",
-					searchQuery,
-					searchQuery
+		try {
+			// const searchQuery = `%${query.toLowerCase()}%`
+			const searchQuery = `%${query.trim()}%`
+			console.log(searchQuery)
+			await db.withExclusiveTransactionAsync(async () => {
+				setWords(
+					// await db.getAllAsync<Word>(
+					// 	"SELECT * FROM 'words' WHERE LOWER(russian) LIKE ? OR japanese LIKE ? LIMIT 100",
+					// 	searchQuery,
+					// 	searchQuery
+					// )
+					await db.getAllAsync<Word>(
+						'SELECT * FROM words WHERE id IN (SELECT MIN(id) FROM words WHERE LOWER(russian) LIKE ? OR japanese LIKE ? GROUP BY russian, japanese) LIMIT 100',
+						searchQuery,
+						searchQuery
+					)
 				)
-			)
-		})
+			})
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
 	useEffect(() => {
